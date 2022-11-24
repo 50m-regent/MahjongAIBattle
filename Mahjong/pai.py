@@ -1,4 +1,4 @@
-from mahjong.constants import CHUN, HATSU
+from mahjong.constants import HAKU, HATSU, CHUN
 
 from constants import Wind, Dragon
 
@@ -32,13 +32,15 @@ class Pai:
         self.is_red = is_red
         
     def __str__(self):
-        color = '\033[31m' if self.is_red or CHUN is self.kind else '\033[32m' if HATSU is self.kind else ''
+        bg_color = '\033[47m'
+        text_color = '\033[31m' if self.is_red or CHUN is self.kind else '\033[32m' if HATSU is self.kind else '\033[37m' if HAKU is self.kind else '\033[30m'
         if self.is_su:
-            return color + f'{self.kind}{self.type}\033[0m'
+            sub_color = '\033[31m' if 'm' == self.type else '\033[34m' if 'p' == self.type else '\033[32m'
+            return f'{bg_color}{text_color}{self.kind}{sub_color}{self.type}\033[0m'
         elif self.is_wind:
-            return color + f'{Wind.winds_jp[self.kind]}\033[0m'
+            return f'{bg_color}{text_color}{Wind.winds_jp[self.kind]}\033[0m'
         elif self.is_dragon:
-            return color + f'{Dragon.dragons_jp[self.kind]}\033[0m'
+            return f'{bg_color}{text_color}{Dragon.dragons_jp[self.kind]}\033[0m'
      
     def __int__(self):
         return ['m', 'p', 's', 'w', 'd'].index(self.type) * 100 + self.is_red * 10 + self.kind
