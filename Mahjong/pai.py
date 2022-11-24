@@ -1,4 +1,4 @@
-from mahjong.constants import HAKU, HATSU, CHUN
+from mahjong.constants import WINDS, HAKU, HATSU, CHUN
 
 from constants import Wind, Dragon
 
@@ -21,7 +21,7 @@ class Pai:
             assert 1 <= kind <= 9
             self.is_su = True
         elif 'w' == type:
-            assert kind in Wind.winds
+            assert kind in WINDS
             self.is_wind = True
         elif 'd' == type:
             assert kind in Dragon.dragons
@@ -109,7 +109,7 @@ def all_pais(
     pais += [Pai(type='s', kind=5, is_red=has_red)]
     pais += [Pai(type='s', kind=kind) for kind in range(6, 10) for _ in range(4)]
     
-    pais += [Pai(type='w', kind=wind) for wind in Wind.winds for _ in range(4)]
+    pais += [Pai(type='w', kind=wind) for wind in WINDS for _ in range(4)]
     pais += [Pai(type='d', kind=dragon) for dragon in Dragon.dragons for _ in range(4)]
         
     return pais

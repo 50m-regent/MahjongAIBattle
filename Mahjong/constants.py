@@ -1,16 +1,10 @@
 from enum import Enum
 
 import mahjong
-from mahjong.constants import EAST, SOUTH, WEST, NORTH, HAKU, HATSU, CHUN
+from mahjong.constants import EAST, SOUTH, WEST, NORTH, WINDS, HAKU, HATSU, CHUN
 
 
 class Wind:
-    winds:list[mahjong.constants] = [
-        EAST,
-        SOUTH,
-        WEST,
-        NORTH
-    ]
     winds_jp:dict[mahjong.constants, str] = {
         EAST:  '東',
         SOUTH: '南',
@@ -18,9 +12,9 @@ class Wind:
         NORTH: '北'
     }
     
-    @classmethod
-    def next_wind(cls, wind) -> mahjong.constants:
-        return cls.winds[(cls.winds.index(wind) + 1) % len(cls.winds)]
+    @staticmethod
+    def next_wind(wind) -> mahjong.constants:
+        return WINDS[(WINDS.index(wind) + 1) % len(WINDS)]
 
 
 class Dragon:
