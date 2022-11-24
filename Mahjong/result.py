@@ -1,4 +1,5 @@
-from player import Player
+from players.player import Player
+
 
 class MahjongResult:
     def __init__(
