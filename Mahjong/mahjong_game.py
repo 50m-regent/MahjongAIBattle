@@ -5,8 +5,8 @@ from mahjong.hand_calculating.hand_config import HandConfig, OptionalRules
 from mahjong.meld import Meld
 
 from player import Player
-from rule import Rule
 from kyoku import Kyoku
+from constants import Rule
 
 class Mahjong:
     def __init__(
@@ -19,9 +19,8 @@ class Mahjong:
         assert len(players) in [3, 4]
         self.players: list[Player] = players
         self.rule: Rule = rule
-
-        self.field_wind: mahjong.constants = mahjong.constants.EAST
-        self.kyoku_count: int = 1
+        
+        self.kyoku = Kyoku(player_num=len(self.players), field_wind=mahjong.constants.EAST, count=1)
 
     def run(self):
         pass
