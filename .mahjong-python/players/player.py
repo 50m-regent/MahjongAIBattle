@@ -1,6 +1,10 @@
+from abc import abstractmethod
+
 import mahjong
 
 from constants import Wind
+from pai import Pai, Paiset
+
 
 class Player:
     def __init__(
@@ -18,4 +22,15 @@ class Player:
     
     def iterate_wind(self):
         self.wind = Wind.next_wind(self.wind)
+        
+    def zimo(self, zimo:Paiset):
+        self.shoupai += zimo
+        
+    @abstractmethod
+    def hele_chance(self) -> bool:
+        pass
+        
+    @abstractmethod
+    def dapai(self) -> Pai:
+        pass
         

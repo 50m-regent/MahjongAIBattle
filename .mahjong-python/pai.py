@@ -1,4 +1,5 @@
 from mahjong.constants import WINDS, HAKU, HATSU, CHUN
+from mahjong.tile import TilesConverter
 
 from constants import Wind, Dragon
 
@@ -43,10 +44,34 @@ class Pai:
             return f'{bg_color}{text_color}{Dragon.dragons_jp[self.kind]}\033[0m'
      
     def __int__(self):
-        return ['m', 'p', 's', 'w', 'd'].index(self.type) * 100 + self.is_red * 10 + self.kind
+        return ['m', 'p', 's', 'w', 'd'].index(self.type) * 100 + self.kind * 10 + self.is_red
     
     def __lt__(self, other):
         return int(self) < int(other)
+    
+    @property
+    def to_mahjong136(self) -> list[int]:
+        sou:str    = ''
+        pin:str    = ''
+        man:str    = ''
+        honors:str = ''
+        if self.is_red:
+            if 'm' == self.type:
+                man = 'r'
+            elif 'p' == self.type:
+                pin = 'r'
+            elif 's' == self.type:
+                sou = 'r'
+        elif 'm' == self.type:
+            man = str(self.kind)
+        elif 'p' == self.type:
+            pin = str(self.kind)
+        elif 's' == self.type:
+            sou = str(self.kind)
+        elif self.type in ['w', 'd']:
+            honors = str((WINDS + Dragon.dragons).index(self.kind) + 1)
+        
+        return TilesConverter.string_to_136_array(sou=sou, pin=pin, man=man, honors=honors, has_aka_dora=True)
     
         
 class Paiset:
@@ -77,7 +102,18 @@ class Paiset:
     def sorted(self):
         return Paiset(sorted(self.pais))
     
-    def pop(self, i):
+    @property
+    def to_mahjong136(self) -> list[int]:
+        return_list = []
+        for pai in self.pais:
+            return_list += pai.to_mahjong136
+        return return_list
+    
+    @property
+    def to_mahjong34(self) -> list[int]:
+        return TilesConverter.to_34_array(self.to_mahjong136)
+    
+    def pop(self, i) -> Pai:
         return self.pais.pop(i)
     
     def append(self, item):

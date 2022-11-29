@@ -1,4 +1,5 @@
 import mahjong
+from mahjong.hand_calculating.hand_config import HandConfig
 
 from constants import Rule
 from players.player import Player
@@ -11,6 +12,7 @@ class Mahjong:
         self,
         players:list[Player],
         rule:Rule,
+        config:HandConfig,
         terminate_point:int=30000
     ):
         assert len(players) in [3, 4]
@@ -23,6 +25,7 @@ class Mahjong:
             wind=mahjong.constants.EAST,
             kyoku_count=1,
             bar_count=0,
+            config=config
         )
 
     def _is_game_end(self) -> bool:
@@ -36,16 +39,16 @@ class Mahjong:
         
         return True
 
-    def run(self, debug:bool=False):
+    def run(self, debug:dict[str,bool]):
         while not self._is_game_end():
-            if debug:
+            if debug['kyoku']:
                 print()
                 print(self.kyoku)
                 [*map(print, self.players)]
                 
             result:MahjongResult = self.kyoku.run(debug)
             
-            if debug:
+            if debug['kyoku']:
                 print(result)
             
             if not result.is_lianzhuang:
