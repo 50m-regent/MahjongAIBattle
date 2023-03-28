@@ -13,8 +13,6 @@ namespace mahjong {
         Qianzhang,
         Shuangpeng,
         Danqi,
-        Jiumian,
-        Shisanmian,
     };
 
     class DaiUtilities {
@@ -27,8 +25,6 @@ namespace mahjong {
             {Dai::Qianzhang,  "Qianzhang"},
             {Dai::Shuangpeng, "Shuangpeng"},
             {Dai::Danqi,      "Danqi"},
-            {Dai::Jiumian,    "Jiumian"},
-            {Dai::Shisanmian, "Shisanmian"},
         };
     };
 }

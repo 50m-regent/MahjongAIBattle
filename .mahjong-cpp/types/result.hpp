@@ -68,7 +68,6 @@ namespace mahjong {
         const Yiti _yiti;
         const std::vector<unsigned> _score;
         const std::vector<Zi> _zis;
-        const Dai _dai;
 
     public:
         Result(
@@ -78,8 +77,7 @@ namespace mahjong {
             const unsigned han, const unsigned fu,
             const Yiti yiti,
             const std::vector<unsigned> score,
-            const std::vector<Zi> zis,
-            const Dai dai
+            const std::vector<Zi> zis
         ) :
             _hepai(hepai),
             _flag(flag),
@@ -88,8 +86,7 @@ namespace mahjong {
             _fu(fu),
             _yiti(yiti),
             _score(score),
-            _zis(zis),
-            _dai(dai) {}
+            _zis(zis) {}
 
         inline Pai get_hepai() const {
             return this->_hepai;
@@ -97,6 +94,10 @@ namespace mahjong {
 
         inline bool is_zimo() const {
             return static_cast<bool>(ResultFlag::Zimo & this->_flag);
+        }
+
+        inline Yi get_yi() const {
+            return this->_yi;
         }
 
         inline unsigned get_han() const {
@@ -114,10 +115,6 @@ namespace mahjong {
         inline std::vector<Zi> get_zis() const {
             return this->_zis;
         }
-
-        inline Dai get_dai() const {
-            return this->_dai;
-        }
     };
 
     inline std::ostream &operator<<(std::ostream &os, const Result result) {
@@ -126,8 +123,8 @@ namespace mahjong {
             os << zi.get_pais();
         }
         os << "],hepai:" << result.get_hepai();
-        os << ",dai:" << DaiUtilities::DISPLAY.at(result.get_dai());
         os << ",he:" << (result.is_zimo() ? "Zimo" : "Rong");
+        os << ",yi:" << result.get_yi();
         os << ",hanfuti:[" << result.get_han() << "," << result.get_fu() << "," << YitiUtilities::DISPLAY.at(result.get_yiti()) << "]";
 
         return os << "}";

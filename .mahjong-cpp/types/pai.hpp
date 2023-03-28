@@ -6,41 +6,6 @@
 #include <iostream>
 
 namespace mahjong {
-    enum class PaiKind: unsigned char {
-        Null = 0,
-
-        Wanzi  = 11,
-        Tongzi = 11,
-        Suozi  = 11,
-
-        Zipai  = 7,
-        Huapai = 8,
-    };
-
-    inline unsigned char operator+(const PaiKind kind1, const PaiKind kind2) {
-        return static_cast<unsigned char>(kind1) + static_cast<unsigned char>(kind2);
-    }
-
-    template<typename T>
-    inline T operator+(const T other, const PaiKind kind) {
-        return other + static_cast<unsigned char>(kind);
-    }
-
-    template<typename T>
-    inline T operator*(const PaiKind kind, const T other) {
-        return static_cast<unsigned char>(kind) * other;
-    }
-
-    template<typename T>
-    inline T operator<<=(T& other, const PaiKind kind) {
-        return other <<= static_cast<unsigned char>(kind);
-    }
-
-    template<typename T>
-    inline T operator>>=(T& other, const PaiKind kind) {
-        return other >>= static_cast<unsigned char>(kind);
-    }
-
     enum class Pai: unsigned long long {
         Null = 0,
 
@@ -97,26 +62,39 @@ namespace mahjong {
         LanHua  = 1ull << 45,
         JuHua   = 1ull << 46,
         ZhuHua  = 1ull << 47,
+
+        FIRST = YiWan,
+        LAST  = ZhuHua,
     };
 
+    inline Pai operator~(const Pai pai) {
+        return static_cast<Pai>(~static_cast<unsigned long long>(pai));
+    }
+
     template <typename T>
-    inline unsigned long long operator&(const Pai pai, const T mask) {
-        return static_cast<unsigned long long>(pai) & mask;
+    inline unsigned long long operator&(const T other, const Pai pai) {
+        return other & static_cast<unsigned long long>(pai);
+    }
+
+    template <typename T>
+    inline unsigned long long operator&=(T &other, const Pai pai) {
+        return other &= static_cast<unsigned long long>(pai);
     }
 
     inline Pai operator|(const Pai pai1, const Pai pai2) {
         return static_cast<Pai>(static_cast<unsigned long long>(pai1) | static_cast<unsigned long long>(pai2));
     }
 
+    template <typename T>
+    inline T operator|=(T &other, const Pai pai) {
+        return other |= static_cast<unsigned long long>(pai);
+    }
+
     inline unsigned long long operator>>(const Pai pai, const unsigned char other) {
         return static_cast<unsigned long long>(pai) >> other;
     }
 
-    inline unsigned long long operator>>(const Pai pai, const PaiKind kind) {
-        return static_cast<unsigned long long>(pai) >> static_cast<unsigned char>(kind);
-    }
-
-    template<typename T>
+    template <typename T>
     inline Pai operator<<=(Pai &pai, const T other) {
         return pai = static_cast<Pai>(static_cast<unsigned long long>(pai) << other);
     }
@@ -179,62 +157,6 @@ namespace mahjong {
             {Pai::LanHua,  "Lf"},
             {Pai::JuHua,   "Jf"},
             {Pai::ZhuHua,  "Zf"},
-        };
-
-        static inline const std::unordered_map<Pai, Pai> NEXT = {
-            {Pai::YiWan,    Pai::LiangWan},
-            {Pai::LiangWan, Pai::SanWan},
-            {Pai::SanWan,   Pai::SiWan},
-            {Pai::SiWan,    Pai::WuWan},
-            {Pai::WuWan,    Pai::ChiWuWan},
-            {Pai::ChiWuWan, Pai::JinWuWan},
-            {Pai::JinWuWan, Pai::LiuWan},
-            {Pai::LiuWan,   Pai::QiWan},
-            {Pai::QiWan,    Pai::BaWan},
-            {Pai::BaWan,    Pai::JiuWan},
-            {Pai::JiuWan,   Pai::YiTong},
-
-            {Pai::YiTong,    Pai::LiangTong},
-            {Pai::LiangTong, Pai::SanTong},
-            {Pai::SanTong,   Pai::SiTong},
-            {Pai::SiTong,    Pai::WuTong},
-            {Pai::WuTong,    Pai::ChiWuTong},
-            {Pai::ChiWuTong, Pai::JinWuTong},
-            {Pai::JinWuTong, Pai::LiuTong},
-            {Pai::LiuTong,   Pai::QiTong},
-            {Pai::QiTong,    Pai::BaTong},
-            {Pai::BaTong,    Pai::JiuTong},
-            {Pai::JiuTong,   Pai::YiSuo},
-
-            {Pai::YiSuo,    Pai::LiangSuo},
-            {Pai::LiangSuo, Pai::SanSuo},
-            {Pai::SanSuo,   Pai::SiSuo},
-            {Pai::SiSuo,    Pai::WuSuo},
-            {Pai::WuSuo,    Pai::ChiWuSuo},
-            {Pai::ChiWuSuo, Pai::JinWuSuo},
-            {Pai::JinWuSuo, Pai::LiuSuo},
-            {Pai::LiuSuo,   Pai::QiSuo},
-            {Pai::QiSuo,    Pai::BaSuo},
-            {Pai::BaSuo,    Pai::JiuSuo},
-            {Pai::JiuSuo,   Pai::Dong},
-
-            {Pai::Dong, Pai::Nan},
-            {Pai::Nan,  Pai::Xi},
-            {Pai::Xi,   Pai::Bei},
-            {Pai::Bei,  Pai::Bai},
-
-            {Pai::Bai,   Pai::Fa},
-            {Pai::Fa,    Pai::Zhong},
-            {Pai::Zhong, Pai::ChunHua},
-
-            {Pai::ChunHua, Pai::XiaHua},
-            {Pai::XiaHua,  Pai::QiuHua},
-            {Pai::QiuHua,  Pai::DongHua},
-            {Pai::DongHua, Pai::MeiHua},
-            {Pai::MeiHua,  Pai::LanHua},
-            {Pai::LanHua,  Pai::JuHua},
-            {Pai::JuHua,   Pai::ZhuHua},
-            {Pai::ZhuHua,  Pai::Null},
         };
 
         static inline const std::unordered_map<Pai, Pai> DRA = {

@@ -25,8 +25,7 @@ int main() {
             Zi(ZiType::AnShunzi, Paiset({Pai::SiWan, Pai::ChiWuWan, Pai::LiuWan})),
             Zi(ZiType::AnShunzi, Paiset({Pai::QiWan, Pai::BaWan, Pai::JiuWan})),
             Zi(ZiType::Duizi,    Paiset({Pai::JiuWan, Pai::JiuWan})),
-        },
-        Dai::Jiumian
+        }
     );
 
     std::cout<<result<<std::endl;

@@ -59,10 +59,22 @@ namespace mahjong {
         ChunzhengLuyise             = 1ull << 43,
 
         LiuManguan = 1ull << 44,
+
+        FIRST = Lizhi,
+        LAST  = LiuManguan,
     };
+
+    inline unsigned long long operator&(const Yi yi1, const Yi yi2) {
+        return static_cast<unsigned long long>(yi1) & static_cast<unsigned long long>(yi2);
+    }
 
     inline Yi operator|(const Yi yi1, const Yi yi2) {
         return static_cast<Yi>(static_cast<unsigned long long>(yi1) | static_cast<unsigned long long>(yi2));
+    }
+
+    template <typename T>
+    inline Yi operator<<=(Yi &yi, const T other) {
+        return yi = static_cast<Yi>(static_cast<unsigned long long>(yi) << other);
     }
 
     class YiUtilities {
@@ -179,6 +191,17 @@ namespace mahjong {
             {Yi::LiuManguan, "LiuManguan"},
         };
     };
+
+    inline std::ostream &operator<<(std::ostream &os, const Yi yis) {
+        os << "[";
+        for (Yi yi = Yi::FIRST; yi <= Yi::LAST; yi <<= 1) {
+            if (yi & yis) {
+                os << YiUtilities::DISPLAY.at(yi) << ",";
+            }
+        }
+
+        return os << "]";
+    }
 }
 
 #endif

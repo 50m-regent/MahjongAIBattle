@@ -24,7 +24,6 @@ namespace mahjong {
 
         bool is_menqianqing() const;
         bool is_fulule() const;
-        bool contains(const Pai pai) const;
     };
 }
 
